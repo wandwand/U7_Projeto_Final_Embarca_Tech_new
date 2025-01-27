@@ -11,6 +11,7 @@
 #include "hardware/i2c.h"
 #include "inc/ssd1306.h"
 #include "pico/binary_info.h"
+#include "pico/time.h" 
 
 #define SW 22             // Pino de leitura do botão do joystick
 static bool fixed_light;    // Variável para verificar se a luz está fixa ou não

@@ -11,6 +11,7 @@
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
 #define BUTTON_6_PIN 6
+#define DEBOUNCE_DELAY_US 50000 
 
 // Variáveis globais
 volatile bool adc_enabled = false;
@@ -20,6 +21,9 @@ uint dma_channel;
 dma_channel_config dma_cfg;
 uint16_t adc_buffer[SAMPLES];
 uint8_t ssd[ssd1306_buffer_length];
+uint64_t last_button_5_time = 0;
+uint64_t last_button_6_time = 0;
+uint64_t last_sw_time = 0;
 
 // Estrutura para renderização no display
 struct render_area frame_area = {
@@ -158,31 +162,42 @@ void setup_buzzer()
 }
 
 // Callback de interrupção dos botões
-void gpio_callback(uint gpio, uint32_t events)
-{
-    if (gpio == BUTTON_5_PIN && (events & GPIO_IRQ_EDGE_FALL))
-    {
-        if (!adc_enabled)
-        {
-            adc_enabled = true;
-            listening = true;
-            printf("Sensor ligado (ADC habilitado).\n");
-            update_display("  ALARME ON", " ADC ENABLED");
+void gpio_callback(uint gpio, uint32_t events) {
+    uint64_t current_time = time_us_64(); // Obtém o tempo atual
+
+    if (gpio == BUTTON_5_PIN && (events & GPIO_IRQ_EDGE_FALL)) {
+        // Verifica debounce para BUTTON_5_PIN
+        if (current_time - last_button_5_time >= DEBOUNCE_DELAY_US) {
+            last_button_5_time = current_time; // Atualiza o tempo do último clique
+            if (!adc_enabled) {
+                adc_enabled = true;
+                listening = true;
+                printf("Sensor ligado (ADC habilitado).\n");
+                update_display("  ALARME ON", " ADC ENABLED");
+            }
         }
     }
-    if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL))
-    {
-        stop_beep(BUZZER_PIN);
-        buzzer_on = false;
-        adc_enabled = false;
-        printf("Alarme desligado.\nSensor desligado (ADC desabilitado).\n");
-        update_display("  ALARME OFF", "  ADC DISABLED");
+
+    if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL)) {
+        // Verifica debounce para BUTTON_6_PIN
+        if (current_time - last_button_6_time >= DEBOUNCE_DELAY_US) {
+            last_button_6_time = current_time; // Atualiza o tempo do último clique
+            stop_beep(BUZZER_PIN);
+            buzzer_on = false;
+            adc_enabled = false;
+            printf("Alarme desligado.\nSensor desligado (ADC desabilitado).\n");
+            update_display("  ALARME OFF", "  ADC DISABLED");
+        }
     }
-      if (gpio == SW)
-  {
-    fixed_light = !fixed_light; // Alterna entre luz fixa e controle pelo joystick
-    printf("Botão SW pressionado: fixed_light = %d\n", fixed_light);
-  }
+
+    if (gpio == SW && (events & GPIO_IRQ_EDGE_FALL)) {
+        // Verifica debounce para o botão SW
+        if (current_time - last_sw_time >= DEBOUNCE_DELAY_US) {
+            last_sw_time = current_time; // Atualiza o tempo do último clique
+            fixed_light = !fixed_light; // Alterna entre luz fixa e controle pelo joystick
+            printf("Botão SW pressionado: fixed_light = %d\n", fixed_light);
+        }
+    }
 }
 
 // Função para realizar leituras do microfone (ADC)
