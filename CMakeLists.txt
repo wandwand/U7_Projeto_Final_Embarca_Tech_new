@@ -72,7 +72,7 @@ target_link_libraries(U7_Projeto_Final_Embarca_Tech
         hardware_irq
         hardware_pwm
         pico_stdlib
-        pico_cyw43_arch_lwip_threadsafe_background
+        
         )
 
 pico_add_extra_outputs(U7_Projeto_Final_Embarca_Tech
