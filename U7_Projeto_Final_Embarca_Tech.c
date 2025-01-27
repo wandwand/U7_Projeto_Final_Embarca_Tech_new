@@ -70,7 +70,7 @@ void smart_home()
 {
     while (true)
     {
-        joystick(fixed_light);
+        //joystick(fixed_light);
         alarme();
     }
 }
@@ -84,7 +84,7 @@ int main()
     setup_adc();
     setup_buttons();
     setup_buzzer();
-    setup();
+    //setup();
     fixed_light = false;
     // Mensagem inicial no display
     update_display("  ALARME DESLIGADO", "  ADC NAO ACIONADO");
