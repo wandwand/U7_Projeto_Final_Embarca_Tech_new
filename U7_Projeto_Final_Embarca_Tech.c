@@ -127,6 +127,12 @@ void setup_adc()
     channel_config_set_read_increment(&dma_cfg, false);
     channel_config_set_write_increment(&dma_cfg, true);
     channel_config_set_dreq(&dma_cfg, DREQ_ADC);
+
+    dma_channel_configure(dma_channel, &dma_cfg,
+                          adc_circular_buffer, // Destino
+                          &adc_hw->fifo,      // Fonte
+                          SAMPLES,            // Número de transferências
+                          true);              // Iniciar imediatamente
 }
 
 // Configuração dos botões
@@ -170,7 +176,7 @@ void gpio_callback(uint gpio, uint32_t events)
             update_display("  ALARME ON", " ADC ENABLED");
         }
     }
-    if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL))
+    else if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL))
     {
         stop_beep(BUZZER_PIN);
         buzzer_on = false;
@@ -178,7 +184,7 @@ void gpio_callback(uint gpio, uint32_t events)
         printf("Alarme desligado.\nSensor desligado (ADC desabilitado).\n");
         update_display("  ALARME OFF", "  ADC DISABLED");
     }
-      if (gpio == SW)
+    else if (gpio == SW)
   {
     fixed_light = !fixed_light; // Alterna entre luz fixa e controle pelo joystick
     printf("Botão SW pressionado: fixed_light = %d\n", fixed_light);
@@ -243,3 +249,17 @@ void update_display(const char *line1, const char *line2)
     render_on_display(ssd, &frame_area);
 }
 
+// Calcula a média geométrica das leituras
+float calculate_geometric_mean(float *buffer, uint16_t count)
+{
+    double product = 1.0;
+
+    // Calcula o produto das leituras (ignora valores <= 0 para evitar problemas matemáticos)
+    for (uint16_t i = 0; i < count; i++)
+    {
+        product *= (buffer[i] > 0) ? buffer[i] : 1;
+    }
+
+    // Retorna a média geométrica
+    return (count > 0) ? pow(product, 1.0 / count) : 0.0;
+}
