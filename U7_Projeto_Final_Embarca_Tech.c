@@ -55,6 +55,11 @@ void alarme() {
             beep(BUZZER_PIN);
             buzzer_on = true;
             listening = true;
+            update_display("  ALARME ON", " ADC ENABLED");
+            
+        }
+        if (buzzer_on){
+            printf("Alarme em disparo \n");
         }
         printf("Intensidade: %d | Média: %.4f\n", intensity, avg);
     }
@@ -135,7 +140,7 @@ void gpio_callback(uint gpio, uint32_t events) {
                 adc_enabled = true;
                 listening = true;
                 printf("Sensor ligado (ADC habilitado).\n");
-                update_display("  ALARME ON", " ADC ENABLED");
+                update_display("  ALARME OFF", " ADC ENABLED");
             }
         }
     }
