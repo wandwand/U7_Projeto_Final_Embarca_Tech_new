@@ -9,6 +9,7 @@
 #define SAMPLES 200
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
 #define BUZZER_PIN 21
+#define BUZZER2_PIN 10
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
 #define BUTTON_6_PIN 6
@@ -52,7 +53,8 @@ void alarme() {
         uint8_t intensity = get_intensity(avg);
 
         if (intensity >= 2 && !buzzer_on) {
-            beep(BUZZER_PIN);
+            //beep(BUZZER_PIN);
+            beep(BUZZER2_PIN);
             buzzer_on = true;
             listening = true;
             update_display("  ALARME ON", " ADC ENABLED");
@@ -121,6 +123,7 @@ void setup_buttons() {
 }
 
 void setup_buzzer() {
+    //Buzzer A
     gpio_init(BUZZER_PIN);
     gpio_set_function(BUZZER_PIN, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(BUZZER_PIN);
@@ -128,6 +131,15 @@ void setup_buzzer() {
     pwm_config_set_clkdiv(&config, clock_get_hz(clk_sys) / (BUZZER_FREQUENCY * 4096));
     pwm_init(slice_num, &config, true);
     pwm_set_gpio_level(BUZZER_PIN, 0);
+
+    //Buzzer B
+    gpio_init(BUZZER2_PIN);
+    gpio_set_function(BUZZER2_PIN, GPIO_FUNC_PWM);
+    uint slice_2_num = pwm_gpio_to_slice_num(BUZZER2_PIN);
+    pwm_config config_2 = pwm_get_default_config();
+    pwm_config_set_clkdiv(&config_2, clock_get_hz(clk_sys) / (BUZZER_FREQUENCY * 4096));
+    pwm_init(slice_2_num, &config_2, true);
+    pwm_set_gpio_level(BUZZER2_PIN, 0);
 }
 
 void gpio_callback(uint gpio, uint32_t events) {
@@ -149,6 +161,7 @@ void gpio_callback(uint gpio, uint32_t events) {
         if (current_time - last_button_6_time >= DEBOUNCE_DELAY_US) {
             last_button_6_time = current_time;
             stop_beep(BUZZER_PIN);
+            stop_beep(BUZZER2_PIN);
             buzzer_on = false;
             adc_enabled = false;
             printf("Alarme desligado.\nSensor desligado (ADC desabilitado).\n");
@@ -190,6 +203,7 @@ uint8_t get_intensity(float v) {
 
 void beep(uint pin) {
     pwm_set_gpio_level(pin, 2048);
+    
 }
 
 void stop_beep(uint pin) {
