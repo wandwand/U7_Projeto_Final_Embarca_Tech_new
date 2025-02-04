@@ -16,6 +16,7 @@
 #define DEBOUNCE_DELAY_US 50000 
 
 // Variáveis globais
+bool leds_enabled = true;
 volatile bool adc_enabled = false;
 volatile bool buzzer_on = false;
 volatile bool listening = false;
@@ -150,7 +151,7 @@ void gpio_callback(uint gpio, uint32_t events) {
             last_button_5_time = current_time;
             
             // Toggle do estado do alarme
-            if(adc_enabled) {
+            if (adc_enabled) {
                 // Desliga se estiver ligado
                 stop_beep(BUZZER_PIN);
                 stop_beep(BUZZER2_PIN);
@@ -164,6 +165,24 @@ void gpio_callback(uint gpio, uint32_t events) {
                 listening = true;
                 printf("Alarme LIGADO\n");
                 update_display("  ALARME ON", " ADC ENABLED");
+            }
+        }
+    }
+
+    if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL)) {
+        // Debounce: verifica se o tempo desde o último clique é maior que o delay
+        if (current_time - last_button_6_time >= DEBOUNCE_DELAY_US) {
+            last_button_6_time = current_time; // Atualiza o tempo do último clique
+
+            // Alterna entre ligar e desligar os LEDs
+            leds_enabled = !leds_enabled;
+            
+            if (leds_enabled) {
+                printf("LEDs LIGADOS\n");
+                update_display("  LEDs ON", adc_enabled ? "ADC ATIVO" : "ADC INATIVO");
+            } else {
+                printf("LEDs DESLIGADOS\n");
+                update_display("  LEDs OFF", adc_enabled ? "ADC ATIVO" : "ADC INATIVO");
             }
         }
     }

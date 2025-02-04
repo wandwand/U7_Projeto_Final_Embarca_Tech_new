@@ -6,7 +6,7 @@ const int VRY = 27;          // Pino de leitura do eixo Y do joystick (ADC1)
 const int ADC_CHANNEL_0 = 0; // Canal ADC para o eixo X
 const int ADC_CHANNEL_1 = 1; // Canal ADC para o eixo Y
 const int LED_G = 13;        // LED verde (PWM) no pino 13
-const int LED_B = 12;       // LED azul (PWM) no pino 12
+const int LED_B = 12;        // LED azul (PWM) no pino 12
 const int LED_R = 11;        // LED vermelho (PWM) no pino 11
 const float DIVIDER_PWM = 16.0;
 const uint16_t PERIOD = 4096;
@@ -24,9 +24,18 @@ void joystick_read_axis(uint16_t *vrx_value, uint16_t *vry_value);
 void joystick(bool fixed_light_t) {
     if (!fixed_light_t) {
         joystick_read_axis(&vrx_value, &vry_value);
-        pwm_set_gpio_level(LED_G, vrx_value);   // LED azul no pino 13 controlado pelo eixo X
-        pwm_set_gpio_level(LED_B, vry_value);  // LED azul no pino 12 controlado pelo eixo Y
-        pwm_set_gpio_level(LED_R, vry_value);   // LED vermelho no pino 11 controlado pelo eixo Y
+        
+        if (leds_enabled) {
+            // Aplica valores do joystick aos LEDs
+            pwm_set_gpio_level(LED_G, vrx_value);
+            pwm_set_gpio_level(LED_B, vry_value);
+            pwm_set_gpio_level(LED_R, (vrx_value + vry_value) / 2); // Mix dos valores
+        } else {
+            // Desliga todos os LEDs
+            pwm_set_gpio_level(LED_G, 0);
+            pwm_set_gpio_level(LED_B, 0);
+            pwm_set_gpio_level(LED_R, 0);
+        }
     }
     sleep_ms(10);
 }

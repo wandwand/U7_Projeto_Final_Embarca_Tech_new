@@ -14,6 +14,7 @@
 
 #define SW 22             // Pino de leitura do botão do joystick
 static bool fixed_light;    // Variável para verificar se a luz está fixa ou não
+extern bool leds_enabled;
 
 void setup();
 void joystick(bool fixed_light_t);
