@@ -148,24 +148,23 @@ void gpio_callback(uint gpio, uint32_t events) {
     if (gpio == BUTTON_5_PIN && (events & GPIO_IRQ_EDGE_FALL)) {
         if (current_time - last_button_5_time >= DEBOUNCE_DELAY_US) {
             last_button_5_time = current_time;
-            if (!adc_enabled) {
+            
+            // Toggle do estado do alarme
+            if(adc_enabled) {
+                // Desliga se estiver ligado
+                stop_beep(BUZZER_PIN);
+                stop_beep(BUZZER2_PIN);
+                buzzer_on = false;
+                adc_enabled = false;
+                printf("Alarme DESLIGADO\n");
+                update_display("  ALARME OFF", " ADC DISABLED");
+            } else {
+                // Liga se estiver desligado
                 adc_enabled = true;
                 listening = true;
-                printf("Sensor ligado (ADC habilitado).\n");
-                update_display("  ALARME OFF", " ADC ENABLED");
+                printf("Alarme LIGADO\n");
+                update_display("  ALARME ON", " ADC ENABLED");
             }
-        }
-    }
-
-    if (gpio == BUTTON_6_PIN && (events & GPIO_IRQ_EDGE_FALL)) {
-        if (current_time - last_button_6_time >= DEBOUNCE_DELAY_US) {
-            last_button_6_time = current_time;
-            stop_beep(BUZZER_PIN);
-            stop_beep(BUZZER2_PIN);
-            buzzer_on = false;
-            adc_enabled = false;
-            printf("Alarme desligado.\nSensor desligado (ADC desabilitado).\n");
-            update_display("  ALARME OFF", "  ADC DISABLED");
         }
     }
 
