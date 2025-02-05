@@ -12,11 +12,13 @@
 #include "inc/ssd1306.h"
 #include "pico/binary_info.h"
 
+//Variaveis joystick
 #define SW 22             // Pino de leitura do botão do joystick
-#define SAMPLES 200
 static bool fixed_light;    // Variável para verificar se a luz está fixa ou não
 extern bool leds_enabled;
 
+// Variaveis alarme
+#define SAMPLES 200
 extern bool leds_enabled;
 extern volatile bool adc_enabled;
 extern volatile bool buzzer_on;
@@ -43,6 +45,8 @@ void gpio_callback(uint gpio, uint32_t events);
 void alarme();
 void smart_home();
 
+
+// Protótipos das funções movidas para joystick.c
 void setup();
 void joystick(bool fixed_light_t);
 void gpio_callback(uint gpio, uint32_t events);
