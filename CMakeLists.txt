@@ -39,7 +39,8 @@ pico_sdk_init()
 add_executable(U7_Projeto_Final_Embarca_Tech
                U7_Projeto_Final_Embarca_Tech.c 
                inc/ssd1306_i2c.c
-               joystick.c)
+               joystick.c
+               alarme.c)
 
 pico_set_program_name(U7_Projeto_Final_Embarca_Tech "U7_Projeto_Final_Embarca_Tech")
 pico_set_program_version(U7_Projeto_Final_Embarca_Tech "0.1")

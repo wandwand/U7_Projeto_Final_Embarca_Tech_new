@@ -1,13 +1,11 @@
-/*
 #include "main.h"
 
-// Definições atualizadas
 #define I2C_SDA 14
 #define I2C_SCL 15
 #define MIC_CHANNEL 2
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f  // Clock seguro (~488 kHz)
-#define SAMPLES 200
+//#define SAMPLES 200
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
 #define BUZZER_PIN 21
 #define BUZZER2_PIN 10
@@ -16,7 +14,7 @@
 #define BUTTON_6_PIN 6
 #define DEBOUNCE_DELAY_US 50000 
 
-// Variáveis globais
+// Variáveis globais (definidas aqui)
 bool leds_enabled = true;
 volatile bool adc_enabled = false;
 volatile bool buzzer_on = false;
@@ -33,20 +31,7 @@ struct render_area frame_area = {
     .start_page = 0,
     .end_page = ssd1306_n_pages - 1};
 
-// Protótipos
-void setup_peripherals();
-void setup_display();
-void setup_adc();
-void setup_buttons();
-void setup_buzzer();
-void sample_mic();
-float mic_power();
-uint8_t get_intensity(float v);
-void beep(uint pin);
-void stop_beep(uint pin);
-void update_display(const char *line1, const char *line2);
-void gpio_callback(uint gpio, uint32_t events);
-
+// Implementação das funções
 void alarme() {
     if (adc_enabled) {
         sample_mic();
@@ -77,19 +62,6 @@ void smart_home() {
     }
 }
 
-int main() {
-    stdio_init_all();
-    setup_peripherals();
-    setup_display();
-    setup_buttons();
-    setup_buzzer();
-    setup();  // Configura joystick (inicializa ADC)
-    setup_adc();  // Configurações específicas do microfone
-    fixed_light = false;
-    update_display("  ALARME DESLIGADO", "  ADC NAO ACIONADO");
-    smart_home();
-}
-
 void setup_peripherals() {
     i2c_init(i2c1, ssd1306_i2c_clock * 1000);
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
@@ -105,6 +77,7 @@ void setup_display() {
     render_on_display(ssd, &frame_area);
 }
 
+// ... (implemente TODAS as outras funções aqui, como setup_adc, setup_buttons, alarme, etc.)
 void setup_adc() {
     adc_gpio_init(MIC_PIN);  // ADC já inicializado pelo joystick
     adc_select_input(MIC_CHANNEL);
@@ -234,20 +207,4 @@ void update_display(const char *line1, const char *line2) {
     ssd1306_draw_string(ssd, 5, 0, (char *)line1);
     ssd1306_draw_string(ssd, 5, 8, (char *)line2);
     render_on_display(ssd, &frame_area);
-}
-*/
-
-#include "main.h"
-
-int main() {
-    stdio_init_all();
-    setup_peripherals();
-    setup_display();
-    setup_buttons();
-    setup_buzzer();
-    setup();  // Configura joystick (assumindo que está em outro arquivo)
-    setup_adc();
-    fixed_light = false;
-    update_display("  ALARME DESLIGADO", "  ADC NAO ACIONADO");
-    smart_home();
 }
