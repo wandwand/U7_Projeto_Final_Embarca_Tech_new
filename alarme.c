@@ -137,7 +137,7 @@ void gpio_callback(uint gpio, uint32_t events) {
                 adc_enabled = true;
                 listening = true;
                 printf("Alarme LIGADO\n");
-                update_display("  ALARME ON", " ADC ENABLED");
+                update_display("  ALARME OFF", " ADC ENABLED");
             }
         }
     }
