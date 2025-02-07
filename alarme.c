@@ -5,9 +5,8 @@
 #define MIC_CHANNEL 2
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f  // Clock seguro (~488 kHz)
-#define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
-#define BUZZER_PIN 21
-#define BUZZER2_PIN 10
+#define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f) 
+#define BUZZER_B 10   // Buzzer B 
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
 #define BUTTON_6_PIN 6
@@ -39,8 +38,7 @@ void alarme() {
         uint8_t intensity = get_intensity(avg);
 
         if (intensity >= 2 && !buzzer_on) {
-            //beep(BUZZER_PIN);
-            beep(BUZZER2_PIN);
+            beep(BUZZER_B);
             buzzer_on = true;
             listening = true;
             update_display("  ALARME ON", " ADC ENABLED");
@@ -49,7 +47,7 @@ void alarme() {
         if (buzzer_on){
             printf("Alarme em disparo \n");
         }
-        printf("Intensidade: %d | Média: %.4f\n", intensity, avg);
+        printf("Intensidade: %d\n", intensity);
     }
     sleep_ms(10);
 }
@@ -97,23 +95,15 @@ void setup_buttons() {
 }
 
 void setup_buzzer() {
-    //Buzzer A
-    gpio_init(BUZZER_PIN);
-    gpio_set_function(BUZZER_PIN, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(BUZZER_PIN);
-    pwm_config config = pwm_get_default_config();
-    pwm_config_set_clkdiv(&config, clock_get_hz(clk_sys) / (BUZZER_FREQUENCY * 4096));
-    pwm_init(slice_num, &config, true);
-    pwm_set_gpio_level(BUZZER_PIN, 0);
 
     //Buzzer B
-    gpio_init(BUZZER2_PIN);
-    gpio_set_function(BUZZER2_PIN, GPIO_FUNC_PWM);
-    uint slice_2_num = pwm_gpio_to_slice_num(BUZZER2_PIN);
+    gpio_init(BUZZER_B);
+    gpio_set_function(BUZZER_B, GPIO_FUNC_PWM);
+    uint slice_2_num = pwm_gpio_to_slice_num(BUZZER_B);
     pwm_config config_2 = pwm_get_default_config();
     pwm_config_set_clkdiv(&config_2, clock_get_hz(clk_sys) / (BUZZER_FREQUENCY * 4096));
     pwm_init(slice_2_num, &config_2, true);
-    pwm_set_gpio_level(BUZZER2_PIN, 0);
+    pwm_set_gpio_level(BUZZER_B, 0);
 }
 
 void gpio_callback(uint gpio, uint32_t events) {
@@ -126,8 +116,7 @@ void gpio_callback(uint gpio, uint32_t events) {
             // Toggle do estado do alarme
             if (adc_enabled) {
                 // Desliga se estiver ligado
-                stop_beep(BUZZER_PIN);
-                stop_beep(BUZZER2_PIN);
+                stop_beep(BUZZER_B);
                 buzzer_on = false;
                 adc_enabled = false;
                 printf("Alarme DESLIGADO\n");

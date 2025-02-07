@@ -28,55 +28,58 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(U7_Projeto_Final_Embarca_Tech C CXX ASM)
+project(main C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-# add_executable(U7_Projeto_Final_Embarca_Tech U7_Projeto_Final_Embarca_Tech.c )
-add_executable(U7_Projeto_Final_Embarca_Tech
-               U7_Projeto_Final_Embarca_Tech.c 
+# add_executable(main main.c )
+add_executable(main
+               main.c 
                inc/ssd1306_i2c.c
                joystick.c
                alarme.c)
 
-pico_set_program_name(U7_Projeto_Final_Embarca_Tech "U7_Projeto_Final_Embarca_Tech")
-pico_set_program_version(U7_Projeto_Final_Embarca_Tech "0.1")
+pico_set_program_name(main "main")
+pico_set_program_version(main "0.1")
 
 # Generate PIO header
-pico_generate_pio_header(U7_Projeto_Final_Embarca_Tech ${CMAKE_CURRENT_LIST_DIR}/blink.pio)
+pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/blink.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(U7_Projeto_Final_Embarca_Tech 1)
-pico_enable_stdio_usb(U7_Projeto_Final_Embarca_Tech 1)
+pico_enable_stdio_uart(main 1)
+pico_enable_stdio_usb(main 1)
 
 # Add the standard library to the build
-target_link_libraries(U7_Projeto_Final_Embarca_Tech
+target_link_libraries(main
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(U7_Projeto_Final_Embarca_Tech PRIVATE
+target_include_directories(main PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(U7_Projeto_Final_Embarca_Tech 
-        hardware_adc
-        hardware_i2c
-        hardware_dma
-        hardware_pio
-        hardware_gpio
-        hardware_timer
-        hardware_clocks
-        hardware_irq
-        hardware_pwm
-        pico_stdlib
-        
+target_link_libraries(main 
+                    pico_cyw43_arch_lwip_poll
+                    pico_stdlib
+                    pico_lwip_mbedtls
+                    pico_mbedtls
+                    pico_lwip_mqtt
+                    hardware_adc
+                    hardware_i2c
+                    hardware_dma
+                    hardware_pio
+                    hardware_gpio
+                    hardware_timer
+                    hardware_clocks
+                    hardware_irq
+                    hardware_pwm
         )
 
-pico_add_extra_outputs(U7_Projeto_Final_Embarca_Tech
+pico_add_extra_outputs(main
                         joystick)
 
      
