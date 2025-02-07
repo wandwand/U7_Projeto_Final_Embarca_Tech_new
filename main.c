@@ -86,6 +86,7 @@ static void mqtt_pub_start_cb(void *arg, const char *topic, u32_t tot_len) {
     DEBUG_printf("Incoming message on topic: %s\n", topic);
 }
 
+// main.c
 static void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags) {
     char buffer[BUFFER_SIZE];
     if (len < BUFFER_SIZE) {
@@ -94,10 +95,14 @@ static void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
         DEBUG_printf("Message received: %s\n", buffer);
         if (strcmp(buffer, "acender") == 0) {
             gpio_put(LED_PIN_B, 1);
-            beep(BUZZER_B);
+            adc_enabled = true;    // Habilita o ADC
+            listening = true;      // Ativa o modo de escuta
         } else if (strcmp(buffer, "apagar") == 0) {
             gpio_put(LED_PIN_B, 0);
-            stop_beep(BUZZER_B);
+            adc_enabled = false;   // Desliga o ADC
+            listening = false;     // Desativa a escuta
+            stop_beep(BUZZER_B);   // Para o buzzer
+            buzzer_on = false;     // Reseta o estado do buzzer
         }
     } else {
         DEBUG_printf("Message too large, discarding.\n");
@@ -134,6 +139,7 @@ err_t mqtt_test_connect(MQTT_CLIENT_T *state) {
     return mqtt_client_connect(state->mqtt_client, &(state->remote_addr), MQTT_SERVER_PORT, mqtt_connection_cb, state, &ci);
 }
 
+// main.c
 void mqtt_run_test(MQTT_CLIENT_T *state) {
     state->mqtt_client = mqtt_client_new();
     if (!state->mqtt_client) {
@@ -145,16 +151,23 @@ void mqtt_run_test(MQTT_CLIENT_T *state) {
         mqtt_set_inpub_callback(state->mqtt_client, mqtt_pub_start_cb, mqtt_pub_data_cb, NULL);
         mqtt_sub_unsub(state->mqtt_client, "pico_w/recv", 0, mqtt_sub_request_cb, NULL, 1);
 
+        uint32_t last_publish = 0;
         while (1) {
-            cyw43_arch_poll();
+            cyw43_arch_poll();       // Mantém a conexão WiFi
+            alarme();                // Verifica o alarme e o ADC
+
             if (mqtt_client_is_connected(state->mqtt_client)) {
-                mqtt_test_publish(state);
-                sleep_ms(5000);
+                uint32_t now = to_ms_since_boot(get_absolute_time());
+                if (now - last_publish >= 5000) {
+                    mqtt_test_publish(state);  // Publica a cada 5s
+                    last_publish = now;
+                }
             } else {
                 DEBUG_printf("Reconnecting...\n");
                 sleep_ms(1000);
                 mqtt_test_connect(state);
             }
+            sleep_ms(10);  // Evita uso excessivo da CPU
         }
     }
 }
@@ -164,6 +177,9 @@ void mqtt_run_test(MQTT_CLIENT_T *state) {
 int main() {
     stdio_init_all();
     setup_buzzer();
+    setup_adc();
+    
+    
 
     gpio_init(LED_PIN_R);
     gpio_init(LED_PIN_B);
@@ -185,7 +201,12 @@ int main() {
 
     MQTT_CLIENT_T *state = mqtt_client_init();
     run_dns_lookup(state);
-    mqtt_run_test(state);
+    while(1){
+        mqtt_run_test(state);
+        alarme();
+    }
+    
+    
 
     cyw43_arch_deinit();
     return 0;

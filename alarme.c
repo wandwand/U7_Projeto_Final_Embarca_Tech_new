@@ -42,14 +42,17 @@ void alarme() {
             buzzer_on = true;
             listening = true;
             update_display("  ALARME ON", " ADC ENABLED");
-            
+            printf("Intensidade crítica: %d (Alarme disparado)\n", intensity); // Aviso único
         }
+        else if (intensity <= 2) { // Só imprime intensidades normais
+            printf("Intensidade: %d\n", intensity);
+        }
+
         if (buzzer_on){
             printf("Alarme em disparo \n");
         }
-        printf("Intensidade: %d\n", intensity);
     }
-    sleep_ms(10);
+    //sleep_ms(10);
 }
 
 void smart_home() {
@@ -75,6 +78,8 @@ void setup_display() {
 }
 
 void setup_adc() {
+    adc_init(); //Testando alarme sozinho
+
     adc_gpio_init(MIC_PIN);  // ADC já inicializado pelo joystick
     adc_select_input(MIC_CHANNEL);
     adc_set_clkdiv(ADC_CLOCK_DIV);  // Clock ajustado
