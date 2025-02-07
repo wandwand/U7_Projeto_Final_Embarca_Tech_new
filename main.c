@@ -39,7 +39,7 @@ int main() {
 #define MQTT_SERVER_HOST "broker.emqx.io"
 #define MQTT_SERVER_PORT 1883
 #define MQTT_TLS 0
-#define WIFI_SSID "Casa27.1 2g" 
+#define WIFI_SSID "Uruguai" 
 #define WIFI_PASSWORD "7707407944" 
 #define BUFFER_SIZE 256
 
@@ -94,8 +94,10 @@ static void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
         DEBUG_printf("Message received: %s\n", buffer);
         if (strcmp(buffer, "acender") == 0) {
             gpio_put(LED_PIN_B, 1);
+            beep(BUZZER_B);
         } else if (strcmp(buffer, "apagar") == 0) {
             gpio_put(LED_PIN_B, 0);
+            stop_beep(BUZZER_B);
         }
     } else {
         DEBUG_printf("Message too large, discarding.\n");
@@ -161,6 +163,8 @@ void mqtt_run_test(MQTT_CLIENT_T *state) {
 
 int main() {
     stdio_init_all();
+    setup_buzzer();
+
     gpio_init(LED_PIN_R);
     gpio_init(LED_PIN_B);
     gpio_init(LED_PIN_G);

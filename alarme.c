@@ -6,7 +6,7 @@
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f  // Clock seguro (~488 kHz)
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f) 
-#define BUZZER_B 10   // Buzzer B 
+//#define BUZZER_B 10   // Buzzer B 
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
 #define BUTTON_6_PIN 6
@@ -74,7 +74,6 @@ void setup_display() {
     render_on_display(ssd, &frame_area);
 }
 
-// ... (implemente TODAS as outras funções aqui, como setup_adc, setup_buttons, alarme, etc.)
 void setup_adc() {
     adc_gpio_init(MIC_PIN);  // ADC já inicializado pelo joystick
     adc_select_input(MIC_CHANNEL);

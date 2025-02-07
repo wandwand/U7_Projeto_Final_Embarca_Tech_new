@@ -19,6 +19,7 @@ extern bool leds_enabled;
 
 // Variaveis alarme
 #define SAMPLES 200
+#define BUZZER_B 10   // Buzzer B 
 extern bool leds_enabled;
 extern volatile bool adc_enabled;
 extern volatile bool buzzer_on;
