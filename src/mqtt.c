@@ -42,12 +42,12 @@ void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags) {
         memcpy(buffer, data, len);
         buffer[len] = '\0';
         DEBUG_printf("Message received: %s\n", buffer);
-        if (strcmp(buffer, "acender") == 0) {
+        if (strcmp(buffer, "liga") == 0) {
             gpio_put(LED_PIN_B, 1);
             listening = true;
             adc_enabled = true;
             update_display("ALARME ON","ADC ENABLED");
-        } else if (strcmp(buffer, "apagar") == 0) {
+        } else if (strcmp(buffer, "desliga") == 0) {
             gpio_put(LED_PIN_B, 0);
             stop_beep(BUZZER_B);
             adc_enabled = false;
@@ -82,7 +82,7 @@ void mqtt_sub_request_cb(void *arg, err_t err)
 err_t mqtt_test_publish(MQTT_CLIENT_T *state) 
 {
     char buffer[BUFFER_SIZE];
-    snprintf(buffer, BUFFER_SIZE, "{\"message\":\"hello from picow %d / %d\"}", state->received, state->counter);
+    snprintf(buffer, BUFFER_SIZE, "{\"message\":\"alarme disparando %d / %d\"}", state->received, state->counter);
     return mqtt_publish(state->mqtt_client, "pico_w/test", buffer, strlen(buffer), 0, 0, mqtt_pub_request_cb, state);
 }
 
@@ -106,9 +106,14 @@ void mqtt_run_test(MQTT_CLIENT_T *state) {
         while (1) {
             cyw43_arch_poll();
             if (mqtt_client_is_connected(state->mqtt_client)) {
-                //mqtt_test_publish(state);
+                
                 alarme();
-                //sleep_ms(5000);
+                
+                if(buzzer_on){
+                   mqtt_test_publish(state);
+                   sleep_ms(5000);
+                }
+                
             } else {
                 DEBUG_printf("Reconnecting...\n");
                 sleep_ms(1000);

@@ -120,6 +120,8 @@ void gpio_callback(uint gpio, uint32_t events) {
             // Toggle do estado do alarme
             if (adc_enabled) {
                 // Desliga se estiver ligado
+                gpio_put(LED_PIN_G, 0);
+                gpio_put(LED_PIN_R, 1);
                 stop_beep(BUZZER_B);
                 buzzer_on = false;
                 adc_enabled = false;
@@ -127,6 +129,8 @@ void gpio_callback(uint gpio, uint32_t events) {
                 update_display("  ALARME OFF", " ADC DISABLED");
             } else {
                 // Liga se estiver desligado
+                gpio_put(LED_PIN_G, 1);
+                gpio_put(LED_PIN_R, 0);
                 adc_enabled = true;
                 listening = true;
                 printf("Alarme LIGADO\n");
