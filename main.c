@@ -30,7 +30,7 @@ int main() {
    
     fixed_light = false;
     update_display("  ALARME OFF", "  ADC DISABLED");
-    alarme();
+    
     
 
     gpio_init(LED_PIN_R);

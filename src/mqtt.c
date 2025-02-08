@@ -106,8 +106,9 @@ void mqtt_run_test(MQTT_CLIENT_T *state) {
         while (1) {
             cyw43_arch_poll();
             if (mqtt_client_is_connected(state->mqtt_client)) {
-                mqtt_test_publish(state);
-                sleep_ms(5000);
+                //mqtt_test_publish(state);
+                alarme();
+                //sleep_ms(5000);
             } else {
                 DEBUG_printf("Reconnecting...\n");
                 sleep_ms(1000);
