@@ -1,3 +1,6 @@
+#ifndef main_h
+#define main_h
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -11,6 +14,8 @@
 #include "hardware/i2c.h"
 #include "inc/ssd1306.h"
 #include "pico/binary_info.h"
+
+#include "inc\mqtt_usr.h"
 
 //Variaveis joystick
 #define SW 22             // Pino de leitura do botão do joystick
@@ -29,6 +34,8 @@ extern uint8_t ssd[ssd1306_buffer_length];
 extern uint64_t last_button_5_time;
 extern uint64_t last_button_6_time;
 extern uint64_t last_sw_time;
+
+
 
 // Protótipos das funções movidas para alarme.c
 void setup_peripherals();
@@ -51,3 +58,5 @@ void smart_home();
 void setup();
 void joystick(bool fixed_light_t);
 void gpio_callback(uint gpio, uint32_t events);
+
+#endif
