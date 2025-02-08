@@ -1,5 +1,5 @@
-#ifndef mqtt_usr_inc_h
-#define mqtt_usr_inc_h
+#ifndef MQTT_USR_INC_H
+#define MQTT_USR_INC_H
 
 #include "pico/binary_info.h"
 #include "pico/stdlib.h"
@@ -18,7 +18,6 @@
 #include "lwip/apps/mqtt_priv.h"
 
 #include "main.h"
-
 //Variaveis MQTT
 #define LED_PIN_G 11
 #define LED_PIN_B 12
@@ -38,6 +37,8 @@ typedef struct {
     u32_t counter;
     u32_t reconnect;
 } MQTT_CLIENT_T;
+
+// Protótipos das funções movidas para mqtt.c
 
 /**
  * @brief Inicializa um cliente MQTT.

@@ -40,6 +40,7 @@
         "stdio.h": "c",
         "string.h": "c",
         "rosc.h": "c",
-        "mqtt_usr.h": "c"
+        "mqtt_usr.h": "c",
+        "joystick.h": "c"
     }
 }
