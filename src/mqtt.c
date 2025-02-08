@@ -1,4 +1,5 @@
 #include "inc\mqtt_usr.h"
+#include "inc\alarme.h"
 
 err_t mqtt_test_connect(MQTT_CLIENT_T *state);
 
@@ -43,10 +44,14 @@ void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags) {
         DEBUG_printf("Message received: %s\n", buffer);
         if (strcmp(buffer, "acender") == 0) {
             gpio_put(LED_PIN_B, 1);
-            beep(BUZZER_B);
+            listening = true;
+            adc_enabled = true;
+            update_display("ALARME ON","ADC ENABLED");
         } else if (strcmp(buffer, "apagar") == 0) {
             gpio_put(LED_PIN_B, 0);
             stop_beep(BUZZER_B);
+            adc_enabled = false;
+            update_display("ALARME OFF","ADC DISABLED");
         }
     } else {
         DEBUG_printf("Message too large, discarding.\n");

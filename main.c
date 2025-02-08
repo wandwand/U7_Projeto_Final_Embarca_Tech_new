@@ -1,3 +1,4 @@
+/*
 #include "main.h"
 
 int main() {
@@ -13,8 +14,8 @@ int main() {
     smart_home();
 }
 
+*/
 
-/*
 #include "main.h"
 
 
@@ -22,7 +23,14 @@ int main() {
     stdio_init_all();
     setup_buzzer();
     setup_adc();
-    
+
+    setup_peripherals();
+    setup_display();
+    setup_buttons();
+   
+    fixed_light = false;
+    update_display("  ALARME OFF", "  ADC DISABLED");
+    alarme();
     
 
     gpio_init(LED_PIN_R);
@@ -47,7 +55,7 @@ int main() {
     run_dns_lookup(state);
     while(1){
         mqtt_run_test(state);
-        alarme();
+        
     }
     
     
@@ -55,4 +63,3 @@ int main() {
     cyw43_arch_deinit();
     return 0;
 }
-*/
