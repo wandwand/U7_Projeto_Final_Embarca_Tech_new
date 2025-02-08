@@ -1,4 +1,4 @@
-#include "main.h"
+#include  "inc\joystick.h"
 
 // Definição dos pinos usados para o joystick e LEDs
 const int VRX = 26;          // Pino de leitura do eixo X do joystick (ADC0)

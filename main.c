@@ -1,5 +1,5 @@
-//#include "main.h"
-/*
+#include "main.h"
+
 int main() {
     stdio_init_all();
     setup_peripherals();
@@ -12,9 +12,9 @@ int main() {
     update_display("  ALARME DESLIGADO", "  ADC NAO ACIONADO");
     smart_home();
 }
-*/
 
 
+/*
 #include "main.h"
 
 
@@ -55,3 +55,4 @@ int main() {
     cyw43_arch_deinit();
     return 0;
 }
+*/
