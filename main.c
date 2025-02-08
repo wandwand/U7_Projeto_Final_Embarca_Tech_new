@@ -9,7 +9,7 @@ int main() {
     setup();  // Configura joystick (assumindo que está em outro arquivo)
     setup_adc();
     fixed_light = false;
-    update_display("  ALARME DESLIGADO", "  ADC NAO ACIONADO");
+    update_display("  ALARME OFF", "  ADC DISABLED");
     smart_home();
 }
 

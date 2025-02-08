@@ -39,9 +39,9 @@ pico_sdk_init()
 add_executable(main
                main.c 
                inc/ssd1306_i2c.c
-               joystick.c
-               alarme.c
-               mqtt.c
+               src/joystick.c
+               src/alarme.c
+               src/mqtt.c
                )
 
 pico_set_program_name(main "main")
