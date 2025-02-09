@@ -2,17 +2,21 @@
 #define ALARME_H
 
 // Variaveis alarme
+//OLED
 #define SAMPLES 200
+extern uint16_t adc_buffer[SAMPLES];
+extern uint8_t ssd[ssd1306_buffer_length];
+//Alarme
 #define BUZZER_B 10 // Buzzer B
 extern bool leds_enabled;
 extern volatile bool mic_enabled;
 extern volatile bool buzzer_on;
 extern volatile bool listening;
-extern uint16_t adc_buffer[SAMPLES];
-extern uint8_t ssd[ssd1306_buffer_length];
 extern uint64_t last_button_5_time;
 extern uint64_t last_button_6_time;
 extern uint64_t last_sw_time;
+
+
 
 // Protótipos das funções movidas para alarme.c
 

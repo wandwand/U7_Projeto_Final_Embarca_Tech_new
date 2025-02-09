@@ -1,11 +1,15 @@
 #include "main.h"
 
-#define I2C_SDA 14
-#define I2C_SCL 15
+//Microfone
 #define MIC_CHANNEL 2
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f // Clock seguro (~488 kHz)
+
+//OLED
+#define I2C_SDA 14
+#define I2C_SCL 15
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
+
 //#define BUZZER_B 10   // Buzzer B 
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
