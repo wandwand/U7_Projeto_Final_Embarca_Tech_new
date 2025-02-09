@@ -1,5 +1,5 @@
-#ifndef joystick_h
-#define joystick_h
+#ifndef JOYSTICK_H
+#define JOYSTICK_H
 
 #include <stdio.h>
 #include <math.h>
@@ -18,8 +18,22 @@ static bool fixed_light;    // Variável para verificar se a luz está fixa ou n
 extern bool leds_enabled;
 
 // Protótipos das funções movidas para joystick.c
-void setup();
+/**
+ * @brief Controla os LEDs com base na posição do joystick.
+ * @param fixed_light_t Se verdadeiro, mantém os LEDs fixos; caso contrário, ajusta com base nos eixos do joystick.
+ */
 void joystick(bool fixed_light_t);
-void gpio_callback(uint gpio, uint32_t events);
 
-#endif
+/**
+ * @brief Configura os periféricos necessários para o funcionamento do joystick e LEDs.
+ */
+void setup();
+
+/**
+ * @brief Callback para interrupções dos botões, alterando estados do alarme e LEDs.
+ * @param gpio Número do pino que acionou a interrupção.
+ * @param events Tipo de evento ocorrido (borda de subida/descida).
+ */
+void gpio_callback(uint gpio, uint32_t events); 
+
+#endif //JOYSTICK_H

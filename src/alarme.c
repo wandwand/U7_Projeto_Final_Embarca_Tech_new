@@ -11,13 +11,13 @@
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
 #define SAMPLES 200
 
-//#define BUZZER_B 10   // Buzzer B 
+//Alarme
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
 #define BUTTON_6_PIN 6
 #define DEBOUNCE_DELAY_US 50000
 
-// Variáveis globais (definidas aqui)
+// Variáveis globais 
 bool leds_enabled = true;
 volatile bool mic_enabled = false;
 volatile bool buzzer_on = false;

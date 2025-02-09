@@ -120,4 +120,4 @@ err_t mqtt_test_connect(MQTT_CLIENT_T *state);
 void mqtt_run_test(MQTT_CLIENT_T *state);
 
 
-#endif
+#endif  //MQTT_USR_INC_H
