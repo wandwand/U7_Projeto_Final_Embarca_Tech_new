@@ -28,13 +28,15 @@ uint64_t last_button_5_time = 0;
 uint64_t last_button_6_time = 0;
 uint64_t last_sw_time = 0;
 
+// Área de renderização do display
 struct render_area frame_area = {
     .start_column = 0,
     .end_column = ssd1306_width - 1,
     .start_page = 0,
     .end_page = ssd1306_n_pages - 1};
 
-// Implementação das funções
+
+// Função principal do alarme
 void alarme()
 {
     if (mic_enabled)
@@ -74,6 +76,7 @@ void smart_home()
     }
 }
 
+// Configuração I2C periféricos
 void setup_peripherals()
 {
     i2c_init(i2c1, ssd1306_i2c_clock * 1000);
@@ -83,6 +86,7 @@ void setup_peripherals()
     gpio_pull_up(I2C_SCL);
 }
 
+// Configuração do display OLED
 void setup_display()
 {
     ssd1306_init();
@@ -90,16 +94,16 @@ void setup_display()
     calculate_render_area_buffer_length(&frame_area);
     render_on_display(ssd, &frame_area);
 }
-
+// Configuração do ADC para o microfone
 void setup_adc()
 {
-    adc_init(); // Testando alarme sozinho
-
-    adc_gpio_init(MIC_PIN); // ADC já inicializado pelo joystick
+    adc_init(); 
+    adc_gpio_init(MIC_PIN); 
     adc_select_input(MIC_CHANNEL);
-    adc_set_clkdiv(ADC_CLOCK_DIV); // Clock ajustado
+    adc_set_clkdiv(ADC_CLOCK_DIV); 
 }
 
+// Configuração dos botões
 void setup_buttons()
 {
     gpio_init(BUTTON_5_PIN);
@@ -113,6 +117,8 @@ void setup_buttons()
     gpio_set_irq_enabled_with_callback(BUTTON_5_PIN, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
     gpio_set_irq_enabled(BUTTON_6_PIN, GPIO_IRQ_EDGE_FALL, true);
 }
+
+// Configuração dos LEDs RGB
 void setup_led_rgb()
 {
     gpio_init(LED_PIN_R);
@@ -123,6 +129,8 @@ void setup_led_rgb()
     gpio_set_dir(LED_PIN_B, GPIO_OUT);
     gpio_set_dir(LED_PIN_G, GPIO_OUT);
 }
+
+// Configuração do buzzer
 void setup_buzzer()
 {
 
@@ -136,6 +144,7 @@ void setup_buzzer()
     pwm_set_gpio_level(BUZZER_B, 0);
 }
 
+// Callback para interrupções de GPIO
 void gpio_callback(uint gpio, uint32_t events)
 {
     uint64_t current_time = time_us_64();
@@ -205,6 +214,7 @@ void gpio_callback(uint gpio, uint32_t events)
     }
 }
 
+// Coleta amostras do microfone
 void sample_mic()
 {
     for (uint i = 0; i < SAMPLES; ++i)
@@ -215,6 +225,7 @@ void sample_mic()
     }
 }
 
+// Calcula a potência média do sinal do microfone
 float mic_power()
 {
     float avg = 0.f;
@@ -223,6 +234,7 @@ float mic_power()
     return sqrt(avg / SAMPLES);
 }
 
+// Obtém a intensidade do som com base na potência
 uint8_t get_intensity(float v)
 {
     if (v < 0.2f)
@@ -236,16 +248,19 @@ uint8_t get_intensity(float v)
     return 4;
 }
 
+// Ativa o buzzer
 void beep(uint pin)
 {
     pwm_set_gpio_level(pin, 2048);
 }
 
+// Desativa o buzzer
 void stop_beep(uint pin)
 {
     pwm_set_gpio_level(pin, 0);
 }
 
+// Atualiza o display OLED
 void update_display(const char *line1, const char *line2)
 {
     memset(ssd, 0, ssd1306_buffer_length);

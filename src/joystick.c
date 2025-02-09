@@ -21,6 +21,7 @@ void setup_pwm_led(uint led, uint *slice, uint16_t level);
 void setup();
 void joystick_read_axis(uint16_t *vrx_value, uint16_t *vry_value);
 
+// Função principal do joystick
 void joystick(bool fixed_light_t) {
     if (!fixed_light_t) {
         joystick_read_axis(&vrx_value, &vry_value);
@@ -40,6 +41,7 @@ void joystick(bool fixed_light_t) {
     sleep_ms(10);
 }
 
+// Configuração do joystick
 void setup_joystick() {
     adc_init();         // Inicializa o ADC uma única vez
     adc_gpio_init(VRX);
@@ -51,6 +53,7 @@ void setup_joystick() {
     gpio_set_irq_enabled_with_callback(SW, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
 }
 
+// Configuração de um LED PWM
 void setup_pwm_led(uint led, uint *slice, uint16_t level) {
     gpio_set_function(led, GPIO_FUNC_PWM);
     *slice = pwm_gpio_to_slice_num(led);
@@ -60,6 +63,7 @@ void setup_pwm_led(uint led, uint *slice, uint16_t level) {
     pwm_set_enabled(*slice, true);
 }
 
+// Configuração inicial
 void setup() {
     stdio_init_all();
     setup_joystick();
@@ -68,6 +72,7 @@ void setup() {
     setup_pwm_led(LED_R, &slice_led_r, led_r_level);   // LED vermelho no pino 11
 }
 
+// Leitura dos eixos do joystick
 void joystick_read_axis(uint16_t *vrx_value, uint16_t *vry_value) {
     adc_select_input(ADC_CHANNEL_0);
     sleep_us(2);
