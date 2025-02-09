@@ -9,6 +9,7 @@
 #define I2C_SDA 14
 #define I2C_SCL 15
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
+#define SAMPLES 200
 
 //#define BUZZER_B 10   // Buzzer B 
 #define BUZZER_FREQUENCY 100
@@ -112,7 +113,16 @@ void setup_buttons()
     gpio_set_irq_enabled_with_callback(BUTTON_5_PIN, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
     gpio_set_irq_enabled(BUTTON_6_PIN, GPIO_IRQ_EDGE_FALL, true);
 }
+void setup_led_rgb()
+{
+    gpio_init(LED_PIN_R);
+    gpio_init(LED_PIN_B);
+    gpio_init(LED_PIN_G);
 
+    gpio_set_dir(LED_PIN_R, GPIO_OUT);
+    gpio_set_dir(LED_PIN_B, GPIO_OUT);
+    gpio_set_dir(LED_PIN_G, GPIO_OUT);
+}
 void setup_buzzer()
 {
 

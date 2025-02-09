@@ -1,11 +1,7 @@
 #ifndef ALARME_H
 #define ALARME_H
 
-// Variaveis alarme
-//OLED
-#define SAMPLES 200
-extern uint16_t adc_buffer[SAMPLES];
-extern uint8_t ssd[ssd1306_buffer_length];
+
 //Alarme
 #define BUZZER_B 10 // Buzzer B
 extern bool leds_enabled;

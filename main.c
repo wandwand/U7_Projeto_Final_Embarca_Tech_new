@@ -23,7 +23,7 @@ int main() {
     stdio_init_all();
     setup_buzzer();
     setup_adc();
-
+    setup_led_rgb();
     setup_peripherals();
     setup_display();
     setup_buttons();
@@ -31,14 +31,6 @@ int main() {
     fixed_light = false;
     update_display("  ALARME OFF", "  ADC DISABLED");
     
-    
-
-    gpio_init(LED_PIN_R);
-    gpio_init(LED_PIN_B);
-    gpio_init(LED_PIN_G);
-    gpio_set_dir(LED_PIN_R, GPIO_OUT);
-    gpio_set_dir(LED_PIN_B, GPIO_OUT);
-    gpio_set_dir(LED_PIN_G, GPIO_OUT);
 
     if (cyw43_arch_init()) {
         DEBUG_printf("Failed to initialize WiFi\n");

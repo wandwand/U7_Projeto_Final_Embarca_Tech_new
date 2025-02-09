@@ -17,7 +17,7 @@
 #include "lwip/apps/mqtt.h"
 #include "lwip/apps/mqtt_priv.h"
 
-#include "main.h"
+
 //Variaveis MQTT
 #define LED_PIN_G 11
 #define LED_PIN_B 12
@@ -26,7 +26,7 @@
 #define MQTT_SERVER_HOST "broker.emqx.io"
 #define MQTT_SERVER_PORT 1883
 #define MQTT_TLS 0
-#define WIFI_SSID "Casa27.1 2g" 
+#define WIFI_SSID "Uruguai" 
 #define WIFI_PASSWORD "7707407944" 
 #define BUFFER_SIZE 256
 
