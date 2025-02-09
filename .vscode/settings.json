@@ -41,6 +41,7 @@
         "string.h": "c",
         "rosc.h": "c",
         "mqtt_usr.h": "c",
-        "joystick.h": "c"
+        "joystick.h": "c",
+        "alarme.h": "c"
     }
 }

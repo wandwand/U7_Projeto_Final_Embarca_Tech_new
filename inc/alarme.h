@@ -3,9 +3,9 @@
 
 // Variaveis alarme
 #define SAMPLES 200
-#define BUZZER_B 10   // Buzzer B 
+#define BUZZER_B 10 // Buzzer B
 extern bool leds_enabled;
-extern volatile bool adc_enabled;
+extern volatile bool mic_enabled;
 extern volatile bool buzzer_on;
 extern volatile bool listening;
 extern uint16_t adc_buffer[SAMPLES];
@@ -14,10 +14,7 @@ extern uint64_t last_button_5_time;
 extern uint64_t last_button_6_time;
 extern uint64_t last_sw_time;
 
-
-
 // Protótipos das funções movidas para alarme.c
-
 
 /**
  * @brief Monitora o microfone e ativa o alarme caso um som acima do limite seja detectado.
