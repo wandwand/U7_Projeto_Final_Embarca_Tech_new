@@ -23,11 +23,19 @@
 #define LED_PIN_B 12
 #define LED_PIN_R 13
 #define DEBUG_printf printf
-#define MQTT_SERVER_HOST "endereço MQTT" //ex: "broker.emqx.io"  --> Para o MQTTX
-#define MQTT_SERVER_PORT "Numero da porta sem aspas" // ex: 1883
+#define MQTT_SERVER_HOST "broker.emqx.io"  
+#define MQTT_SERVER_PORT 1883
 #define MQTT_TLS 0
-#define WIFI_SSID "SSIDdoWifi" 
-#define WIFI_PASSWORD "SenhaDoWifi" 
+#define WIFI_SSID "Uruguai" 
+#define WIFI_PASSWORD "7707407944"
+
+/*
+WIFI_SSID = SSID da sua rede Wifi;
+WIFI_PASSWORD = Senha do Wifi;
+MQTT_SERVER_HOST = endereço MQTT (ex:broker.emqx.io);
+MQTT_SERVER_PORT = Número da porta (ex:1883).
+*/
+
 #define BUFFER_SIZE 256
 
 typedef struct {

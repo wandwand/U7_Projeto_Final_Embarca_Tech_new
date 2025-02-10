@@ -3,11 +3,11 @@
 
 int main() {
     stdio_init_all();
+    setup_buttons();
     setup_peripherals();
     setup_display();
-    setup_buttons();
     setup_buzzer();
-    setup();  // Configura joystick (assumindo que está em outro arquivo)
+    setup();  
     setup_adc();
     fixed_light = false;
     update_display("  ALARME OFF", "  ADC DISABLED");
