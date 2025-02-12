@@ -26,7 +26,7 @@
 #define MQTT_SERVER_HOST "broker.emqx.io"  
 #define MQTT_SERVER_PORT 1883
 #define MQTT_TLS 0
-#define WIFI_SSID "Uruguai" 
+#define WIFI_SSID "Casa27.1 2g" 
 #define WIFI_PASSWORD "7707407944"
 
 /*

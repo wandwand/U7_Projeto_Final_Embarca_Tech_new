@@ -1,9 +1,6 @@
 #include "main.h"
 
-//Microfone
-#define MIC_CHANNEL 2
-#define MIC_PIN (26 + MIC_CHANNEL)
-#define ADC_CLOCK_DIV 256.f // Clock seguro (~488 kHz)
+
 
 //OLED
 #define I2C_SDA 14
@@ -11,10 +8,6 @@
 #define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
 #define SAMPLES 200
 
-//Alarme
-#define BUZZER_FREQUENCY 100
-#define BUTTON_5_PIN 5
-#define BUTTON_6_PIN 6
 #define DEBOUNCE_DELAY_US 50000
 
 // Variáveis globais 
@@ -109,10 +102,6 @@ void setup_buttons()
     gpio_init(BUTTON_5_PIN);
     gpio_set_dir(BUTTON_5_PIN, GPIO_IN);
     gpio_pull_up(BUTTON_5_PIN);
-
-    gpio_init(BUTTON_6_PIN);
-    gpio_set_dir(BUTTON_6_PIN, GPIO_IN);
-    gpio_pull_up(BUTTON_6_PIN);
 
     gpio_set_irq_enabled_with_callback(BUTTON_5_PIN, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
     gpio_set_irq_enabled(BUTTON_6_PIN, GPIO_IRQ_EDGE_FALL, true);

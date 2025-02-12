@@ -14,6 +14,7 @@
 
 //Variaveis joystick
 #define SW 22             // Pino de leitura do botão do joystick
+#define BUTTON_6_PIN 6     //Pino de leitura do botão B lado direito da placa
 static bool fixed_light;    // Variável para verificar se a luz está fixa ou não
 extern bool leds_enabled;
 

@@ -47,6 +47,10 @@ void setup_joystick() {
     adc_gpio_init(VRX);
     adc_gpio_init(VRY);
 
+    gpio_init(BUTTON_6_PIN);
+    gpio_set_dir(BUTTON_6_PIN, GPIO_IN);
+    gpio_pull_up(BUTTON_6_PIN);
+
     gpio_init(SW);
     gpio_set_dir(SW, GPIO_IN);
     gpio_pull_up(SW);
