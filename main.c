@@ -1,4 +1,4 @@
-/*
+
 #include "main.h"
 
 int main() {
@@ -14,7 +14,7 @@ int main() {
     smart_home();
 }
 
-*/
+/*
 
 #include "main.h"
 
@@ -55,3 +55,5 @@ int main() {
     cyw43_arch_deinit();
     return 0;
 }
+
+*/

@@ -6,13 +6,20 @@
 #define BUZZER_B 10 // Buzzer B
 #define BUZZER_FREQUENCY 100
 #define BUTTON_5_PIN 5
+
+//Microfone
 #define MIC_CHANNEL 2
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f // Clock seguro (~488 kHz)
-extern bool leds_enabled;
-extern volatile bool mic_enabled;
+
+
 extern volatile bool buzzer_on;
+
+extern volatile bool mic_enabled;
+
 extern volatile bool listening;
+
+extern bool leds_enabled;
 extern uint64_t last_button_5_time;
 extern uint64_t last_button_6_time;
 extern uint64_t last_sw_time;

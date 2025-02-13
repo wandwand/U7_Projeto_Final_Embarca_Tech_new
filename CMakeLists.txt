@@ -42,6 +42,7 @@ add_executable(main
                src/joystick.c
                src/alarme.c
                src/mqtt.c
+               src/display.c
                )
 
 pico_set_program_name(main "main")

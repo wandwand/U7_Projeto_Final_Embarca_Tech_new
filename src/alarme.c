@@ -1,12 +1,6 @@
 #include "main.h"
+#include "inc\display.h"
 
-
-
-//OLED
-#define I2C_SDA 14
-#define I2C_SCL 15
-#define ADC_ADJUST(x) (x * 3.3f / (1 << 12u) - 1.65f)
-#define SAMPLES 200
 
 #define DEBOUNCE_DELAY_US 50000
 
@@ -15,18 +9,12 @@ bool leds_enabled = true;
 volatile bool mic_enabled = false;
 volatile bool buzzer_on = false;
 volatile bool listening = false;
-uint16_t adc_buffer[SAMPLES];
-uint8_t ssd[ssd1306_buffer_length];
+
 uint64_t last_button_5_time = 0;
 uint64_t last_button_6_time = 0;
 uint64_t last_sw_time = 0;
 
-// Área de renderização do display
-struct render_area frame_area = {
-    .start_column = 0,
-    .end_column = ssd1306_width - 1,
-    .start_page = 0,
-    .end_page = ssd1306_n_pages - 1};
+
 
 
 // Função principal do alarme
@@ -69,24 +57,9 @@ void smart_home()
     }
 }
 
-// Configuração I2C periféricos
-void setup_peripherals()
-{
-    i2c_init(i2c1, ssd1306_i2c_clock * 1000);
-    gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
-    gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
-    gpio_pull_up(I2C_SDA);
-    gpio_pull_up(I2C_SCL);
-}
 
-// Configuração do display OLED
-void setup_display()
-{
-    ssd1306_init();
-    memset(ssd, 0, ssd1306_buffer_length);
-    calculate_render_area_buffer_length(&frame_area);
-    render_on_display(ssd, &frame_area);
-}
+
+
 // Configuração do ADC para o microfone
 void setup_adc()
 {
@@ -249,11 +222,3 @@ void stop_beep(uint pin)
     pwm_set_gpio_level(pin, 0);
 }
 
-// Atualiza o display OLED
-void update_display(const char *line1, const char *line2)
-{
-    memset(ssd, 0, ssd1306_buffer_length);
-    ssd1306_draw_string(ssd, 5, 0, (char *)line1);
-    ssd1306_draw_string(ssd, 5, 8, (char *)line2);
-    render_on_display(ssd, &frame_area);
-}
