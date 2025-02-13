@@ -12,7 +12,7 @@
 #include "hardware/pwm.h"
 #include "hardware/clocks.h"
 #include "hardware/i2c.h"
-#include "inc/ssd1306.h"
+#include "inc/display/ssd1306.h"
 #include "pico/binary_info.h"
 
 #include "inc\joystick.h"
