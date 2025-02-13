@@ -18,6 +18,6 @@
 #include "inc\joystick.h"
 #include "inc\mqtt_usr.h"
 #include "inc\alarme\alarme.h"
-
+#include "inc\display.h"
 
 #endif

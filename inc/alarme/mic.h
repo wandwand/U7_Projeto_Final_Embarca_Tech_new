@@ -28,4 +28,4 @@ void sample_mic();
 float mic_power();
 uint8_t get_intensity(float v);
 
-#endif
+#endif // MIC_H

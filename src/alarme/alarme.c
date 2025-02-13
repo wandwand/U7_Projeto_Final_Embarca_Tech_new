@@ -19,7 +19,13 @@ uint64_t last_sw_time = 0;
 
 
 
-// Função principal do alarme
+/**
+ * @brief Função principal do alarme.
+ * 
+ * Verifica se o microfone está habilitado e, caso esteja, realiza a leitura do som ambiente.
+ * Se a intensidade do som for crítica (>= 2), dispara o alarme (buzzer) e atualiza o display.
+ * Caso contrário, apenas imprime a intensidade do som no console.
+ */
 void alarme()
 {
     if (mic_enabled)
@@ -50,6 +56,11 @@ void alarme()
     // sleep_ms(10);
 }
 
+/**
+ * @brief Função principal da smart home.
+ * 
+ * Executa um loop infinito que monitora o joystick e o alarme.
+ */
 void smart_home()
 {
     while (true)
@@ -59,12 +70,12 @@ void smart_home()
     }
 }
 
-
-
-
-
-
-// Configuração dos botões
+/**
+ * @brief Configura os botões do sistema.
+ * 
+ * Inicializa os pinos dos botões (BUTTON_5_PIN e BUTTON_6_PIN) como entradas com pull-up.
+ * Habilita interrupções para detectar bordas de descida (botão pressionado) e associa uma função de callback.
+ */
 void setup_buttons()
 {
     gpio_init(BUTTON_5_PIN);
@@ -75,7 +86,11 @@ void setup_buttons()
     gpio_set_irq_enabled(BUTTON_6_PIN, GPIO_IRQ_EDGE_FALL, true);
 }
 
-// Configuração dos LEDs RGB
+/**
+ * @brief Configura os LEDs RGB.
+ * 
+ * Inicializa os pinos dos LEDs (LED_PIN_R, LED_PIN_G, LED_PIN_B) como saídas.
+ */
 void setup_led_rgb()
 {
     gpio_init(LED_PIN_R);
@@ -87,10 +102,14 @@ void setup_led_rgb()
     gpio_set_dir(LED_PIN_G, GPIO_OUT);
 }
 
-// Configuração do buzzer
+/**
+ * @brief Configura o buzzer.
+ * 
+ * Inicializa o pino do buzzer (BUZZER_B) como saída PWM.
+ * Configura a frequência do buzzer e o nível inicial (desligado).
+ */
 void setup_buzzer()
 {
-
     // Buzzer B
     gpio_init(BUZZER_B);
     gpio_set_function(BUZZER_B, GPIO_FUNC_PWM);
@@ -101,7 +120,15 @@ void setup_buzzer()
     pwm_set_gpio_level(BUZZER_B, 0);
 }
 
-// Callback para interrupções de GPIO
+/**
+ * @brief Callback para interrupções dos botões.
+ * 
+ * Gerencia as interrupções dos botões (BUTTON_5_PIN, BUTTON_6_PIN e SW).
+ * Realiza ações como ligar/desligar o alarme, LEDs e alternar o estado da luz fixa.
+ * 
+ * @param gpio Número do pino que acionou a interrupção.
+ * @param events Tipo de evento ocorrido (borda de subida/descida).
+ */
 void gpio_callback(uint gpio, uint32_t events)
 {
     uint64_t current_time = time_us_64();
@@ -171,17 +198,26 @@ void gpio_callback(uint gpio, uint32_t events)
     }
 }
 
-
-
-// Ativa o buzzer
+/**
+ * @brief Ativa o buzzer.
+ * 
+ * Define o nível do PWM para gerar um som no buzzer.
+ * 
+ * @param pin Pino onde o buzzer está conectado.
+ */
 void beep(uint pin)
 {
     pwm_set_gpio_level(pin, 2048);
 }
 
-// Desativa o buzzer
+/**
+ * @brief Desativa o buzzer.
+ * 
+ * Define o nível do PWM como 0 para silenciar o buzzer.
+ * 
+ * @param pin Pino onde o buzzer está conectado.
+ */
 void stop_beep(uint pin)
 {
     pwm_set_gpio_level(pin, 0);
 }
-

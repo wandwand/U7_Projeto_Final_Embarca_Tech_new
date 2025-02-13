@@ -2,7 +2,11 @@
 #include "inc\alarme\alarme.h"
 #include "inc\alarme\mic.h"
 
-// Inicializa o cliente MQTT
+
+/**
+ * @brief Inicializa um cliente MQTT.
+ * @return Ponteiro para a estrutura MQTT_CLIENT_T inicializada, ou NULL em caso de erro.
+ */
 MQTT_CLIENT_T *mqtt_client_init(void) {
     MQTT_CLIENT_T *state = calloc(1, sizeof(MQTT_CLIENT_T));
     if (!state) {
@@ -12,7 +16,12 @@ MQTT_CLIENT_T *mqtt_client_init(void) {
     return state;
 }
 
-// Callback para resolução de DNS
+/**
+ * @brief Callback chamada quando a resolução de DNS é concluída.
+ * @param name Nome do host resolvido.
+ * @param ipaddr Endereço IP resolvido.
+ * @param callback_arg Argumento passado para o callback (ponteiro para a estrutura MQTT_CLIENT_T).
+ */
 void dns_found(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
     MQTT_CLIENT_T *state = (MQTT_CLIENT_T *)callback_arg;
     if (ipaddr) {
@@ -23,7 +32,10 @@ void dns_found(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
     }
 }
 
-// Realiza a busca de DNS
+/**
+ * @brief Realiza a busca de DNS para obter o IP do servidor MQTT.
+ * @param state Ponteiro para a estrutura MQTT_CLIENT_T.
+ */
 void run_dns_lookup(MQTT_CLIENT_T *state) {
     DEBUG_printf("Running DNS lookup for %s...\n", MQTT_SERVER_HOST);
     if (dns_gethostbyname(MQTT_SERVER_HOST, &(state->remote_addr), dns_found, state) == ERR_INPROGRESS) {
@@ -34,12 +46,23 @@ void run_dns_lookup(MQTT_CLIENT_T *state) {
     }
 }
 
-// Callback para início de publicação MQTT
+/**
+ * @brief Callback chamada quando uma nova publicação MQTT é recebida.
+ * @param arg Argumento do callback.
+ * @param topic Tópico da mensagem recebida.
+ * @param tot_len Tamanho total da mensagem.
+ */
 void mqtt_pub_start_cb(void *arg, const char *topic, u32_t tot_len) {
     DEBUG_printf("Incoming message on topic: %s\n", topic);
 }
 
-// Callback para recebimento de dados MQTT
+/**
+ * @brief Callback chamada quando os dados de uma publicação MQTT são recebidos.
+ * @param arg Argumento do callback.
+ * @param data Dados recebidos.
+ * @param len Tamanho dos dados.
+ * @param flags Flags da mensagem MQTT.
+ */
 void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags) {
     char buffer[BUFFER_SIZE];
     if (len < BUFFER_SIZE) {
@@ -64,7 +87,12 @@ void mqtt_pub_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags) {
     }
 }
 
-// Callback para conexão MQTT
+/**
+ * @brief Callback chamada quando a conexão MQTT é estabelecida ou falha.
+ * @param client Ponteiro para a estrutura mqtt_client_t.
+ * @param arg Argumento do callback.
+ * @param status Status da conexão MQTT.
+ */
 void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status) {
     if (status == MQTT_CONNECT_ACCEPTED) {
         gpio_put(LED_PIN_G, 1);
@@ -75,17 +103,29 @@ void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status
     }
 }
 
-// Callback para solicitação de publicação MQTT
+/**
+ * @brief Callback chamada quando uma publicação MQTT é realizada.
+ * @param arg Argumento do callback.
+ * @param err Código de erro da publicação.
+ */
 void mqtt_pub_request_cb(void *arg, err_t err) {
     DEBUG_printf("Publish request status: %d\n", err);
 }
 
-// Callback para solicitação de inscrição MQTT
+/**
+ * @brief Callback chamada quando uma solicitação de inscrição MQTT é concluída.
+ * @param arg Argumento do callback.
+ * @param err Código de erro da inscrição.
+ */
 void mqtt_sub_request_cb(void *arg, err_t err) {
     DEBUG_printf("Subscription request status: %d\n", err);
 }
-
-// Publica uma mensagem de teste no tópico MQTT
+ 
+/**
+ * @brief Publica uma mensagem de teste no tópico MQTT "pico_w/test".
+ * @param state Ponteiro para a estrutura MQTT_CLIENT_T.
+ * @return Código de erro da publicação MQTT.
+ */
 err_t mqtt_test_publish(MQTT_CLIENT_T *state) {
     char buffer[BUFFER_SIZE];
    
@@ -93,7 +133,11 @@ err_t mqtt_test_publish(MQTT_CLIENT_T *state) {
     return mqtt_publish(state->mqtt_client, "pico_w/test", buffer, strlen(buffer), 0, 0, mqtt_pub_request_cb, state);
 }
 
-// Conecta ao Broker
+/**
+ * @brief Conecta ao broker MQTT.
+ * @param state Ponteiro para a estrutura MQTT_CLIENT_T.
+ * @return Código de erro da conexão MQTT.
+ */
 err_t mqtt_test_connect(MQTT_CLIENT_T *state)
 {
     struct mqtt_connect_client_info_t ci = {0};
@@ -101,6 +145,11 @@ err_t mqtt_test_connect(MQTT_CLIENT_T *state)
     return mqtt_client_connect(state->mqtt_client, &(state->remote_addr), MQTT_SERVER_PORT, mqtt_connection_cb, state, &ci);
 }
 
+
+/**
+ * @brief Inicializa e executa o cliente MQTT, publicando mensagens periodicamente.
+ * @param state Ponteiro para a estrutura MQTT_CLIENT_T.
+ */
 void mqtt_run_test(MQTT_CLIENT_T *state)
 {
     state->mqtt_client = mqtt_client_new();

@@ -2,7 +2,12 @@
 
 uint16_t adc_buffer_mic[SAMPLES_MIC];  // Definição da variável
 
-// Configuração do ADC para o microfone
+/**
+ * @brief Configura o ADC para leitura do microfone.
+ * 
+ * Inicializa o ADC, configura o pino do microfone e define o canal de entrada.
+ * Também ajusta o divisor de clock para garantir uma taxa de amostragem segura.
+ */
 void setup_adc()
 {
     adc_init(); 
@@ -11,7 +16,12 @@ void setup_adc()
     adc_set_clkdiv(ADC_CLOCK_DIV); 
 }
 
-// Coleta amostras do microfone
+/**
+ * @brief Coleta amostras do microfone e armazena no buffer ADC.
+ * 
+ * Realiza múltiplas leituras do ADC no canal do microfone e armazena os valores 
+ * no buffer `adc_buffer_mic`. Cada amostra tem um pequeno atraso para estabilidade.
+ */
 void sample_mic()
 {
     for (uint i = 0; i < SAMPLES_MIC; ++i)
@@ -22,7 +32,15 @@ void sample_mic()
     }
 }
 
-// Calcula a potência média do sinal do microfone
+/**
+ * @brief Calcula a potência média do sinal captado pelo microfone.
+ * 
+ * A potência é calculada somando os quadrados das amostras armazenadas no buffer 
+ * e dividindo pelo número total de amostras. O resultado representa a intensidade 
+ * média do sinal captado.
+ * 
+ * @return Potência média do sinal do microfone.
+ */
 float mic_power()
 {
     float avg = 0.f;
@@ -31,7 +49,15 @@ float mic_power()
     return sqrt(avg / SAMPLES_MIC);
 }
 
-// Obtém a intensidade do som com base na potência
+/**
+ * @brief Determina a intensidade do som com base na potência calculada.
+ * 
+ * Classifica a intensidade do som em níveis de 0 a 4, dependendo do valor da 
+ * potência média calculada.
+ * 
+ * @param v Potência do sinal calculada pela função mic_power().
+ * @return Nível de intensidade do som (0 a 4).
+ */
 uint8_t get_intensity(float v)
 {
     if (v < 0.2f)
