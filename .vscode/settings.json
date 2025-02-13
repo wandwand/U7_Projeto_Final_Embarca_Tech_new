@@ -46,6 +46,7 @@
         "math.h": "c",
         "stdlib.h": "c",
         "display.h": "c",
-        "mic.h": "c"
+        "mic.h": "c",
+        "main.h": "c"
     }
 }

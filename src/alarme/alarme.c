@@ -1,6 +1,6 @@
 #include "main.h"
 #include "inc\display.h"
-#include "inc\mic.h"
+#include "inc\alarme\mic.h"
 
 #define DEBOUNCE_DELAY_US 50000
 

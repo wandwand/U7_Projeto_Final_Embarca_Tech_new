@@ -1,4 +1,4 @@
-#include "inc\mic.h"
+#include "inc\alarme\mic.h"
 
 uint16_t adc_buffer_mic[SAMPLES_MIC];  // Definição da variável
 

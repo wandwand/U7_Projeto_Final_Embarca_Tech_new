@@ -1,6 +1,6 @@
 #include "inc\mqtt_usr.h"
-#include "inc\alarme.h"
-#include "inc\mic.h"
+#include "inc\alarme\alarme.h"
+#include "inc\alarme\mic.h"
 
 // Inicializa o cliente MQTT
 MQTT_CLIENT_T *mqtt_client_init(void) {
