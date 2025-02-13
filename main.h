@@ -12,8 +12,8 @@
 #include "hardware/pwm.h"
 #include "hardware/clocks.h"
 #include "hardware/i2c.h"
-#include "inc/display/ssd1306.h"
 #include "pico/binary_info.h"
+#include "inc\display\ssd1306.h"
 
 #include "inc\joystick.h"
 #include "inc\mqtt_usr.h"

@@ -8,7 +8,7 @@
 #include <ctype.h>
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
-#include "inc/ssd1306.h"
+#include "inc\display\ssd1306.h"
 #include "pico/binary_info.h"
 
 
