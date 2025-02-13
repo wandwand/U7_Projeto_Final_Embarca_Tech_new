@@ -40,10 +40,11 @@ add_executable(main
                main.c 
                inc/display/ssd1306_i2c.c
                src/joystick.c
-               src/alarme.c
+               src/alarme/alarme.c
+               src/alarme/mic.c
                src/mqtt.c
                src/display.c
-               src/mic.c
+               
                )
 
 pico_set_program_name(main "main")
