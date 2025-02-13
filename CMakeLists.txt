@@ -43,6 +43,7 @@ add_executable(main
                src/alarme.c
                src/mqtt.c
                src/display.c
+               src/mic.c
                )
 
 pico_set_program_name(main "main")

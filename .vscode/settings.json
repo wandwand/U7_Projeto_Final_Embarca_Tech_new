@@ -45,6 +45,7 @@
         "alarme.h": "c",
         "math.h": "c",
         "stdlib.h": "c",
-        "display.h": "c"
+        "display.h": "c",
+        "mic.h": "c"
     }
 }
