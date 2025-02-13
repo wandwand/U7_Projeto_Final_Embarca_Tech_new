@@ -18,11 +18,14 @@
 #define MIC_PIN (26 + MIC_CHANNEL)
 #define ADC_CLOCK_DIV 256.f // Clock seguro (~488 kHz)
 #define SAMPLES_MIC 200
+
 extern uint16_t adc_buffer_mic[SAMPLES_MIC];  // Definição real
-
 extern volatile bool mic_enabled;
-
 extern volatile bool listening;
 
+//Protótipos
+void sample_mic();
+float mic_power();
+uint8_t get_intensity(float v);
 
 #endif
