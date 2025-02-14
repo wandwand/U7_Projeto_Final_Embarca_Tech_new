@@ -16,12 +16,10 @@
 #include "lwip/altcp_tls.h"
 #include "lwip/apps/mqtt.h"
 #include "lwip/apps/mqtt_priv.h"
-
+#include "inc\config.h"
 
 //Variaveis MQTT
-#define LED_PIN_G 11
-#define LED_PIN_B 12
-#define LED_PIN_R 13
+
 #define DEBUG_printf printf
 #define MQTT_SERVER_HOST "broker.emqx.io"  
 #define MQTT_SERVER_PORT 1883

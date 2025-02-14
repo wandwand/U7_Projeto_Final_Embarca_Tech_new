@@ -1,7 +1,7 @@
 #include "inc\mqtt_usr.h"
 #include "inc\alarme\alarme.h"
 #include "inc\alarme\mic.h"
-
+#include "inc\display.h"
 
 /**
  * @brief Inicializa um cliente MQTT.

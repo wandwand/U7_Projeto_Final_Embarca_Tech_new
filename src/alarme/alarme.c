@@ -1,6 +1,7 @@
-#include "main.h"
 #include "inc\display.h"
 #include "inc\alarme\mic.h"
+#include "inc\alarme\alarme.h"
+#include "inc\config.h"
 
 #define DEBOUNCE_DELAY_US 50000
 
@@ -61,14 +62,6 @@ void alarme()
  * 
  * Executa um loop infinito que monitora o joystick e o alarme.
  */
-void smart_home()
-{
-    while (true)
-    {
-        joystick(fixed_light);
-        alarme();
-    }
-}
 
 /**
  * @brief Configura os botões do sistema.

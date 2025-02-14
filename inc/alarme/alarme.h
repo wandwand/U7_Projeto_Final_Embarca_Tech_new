@@ -1,6 +1,13 @@
 #ifndef ALARME_H
 #define ALARME_H
 
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include "pico/stdlib.h"
+#include "pico/binary_info.h"
 
 //Alarme
 #define BUZZER_B 10 // Buzzer B
@@ -9,9 +16,9 @@
 
 
 extern volatile bool buzzer_on;
-
-
 extern bool leds_enabled;
+
+
 extern uint64_t last_button_5_time;
 extern uint64_t last_button_6_time;
 extern uint64_t last_sw_time;

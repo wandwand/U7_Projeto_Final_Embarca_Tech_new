@@ -1,5 +1,14 @@
 
-/*#include "main.h"
+#include "main.h"
+void smart_home()
+{
+    while (true)
+    {
+        joystick(fixed_light);
+        alarme();
+    }
+}
+
 
 int main() {
     stdio_init_all();
@@ -14,7 +23,7 @@ int main() {
     smart_home();
 }
 
-*/
+/*
 
 #include "main.h"
 
@@ -57,3 +66,4 @@ int main() {
 }
 
 
+*/
